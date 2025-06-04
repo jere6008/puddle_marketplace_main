@@ -1,0 +1,30 @@
+<%- include('partials/header'); -%>
+
+<title>Puddle | login</title>
+<header>
+    <div class="container-sm mt-5">
+        <div class="row justify-content-center">
+            <form class="form col col-md-6">
+                    <h2 class="text-white ">Login</h2>
+                    <div class="mb-3">
+                        <label for="email" class="form-label text-white">Enter email: </label>
+                        <input type="email" class="form-control w-100" id="email" required placeholder="Email">
+                        <div class="emailerr text-danger"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label text-white">Enter password: </label>
+                        <input type="password" class="form-control w-100" id="password" required placeholder="Password">
+                        <div class="passerr text-danger"></div>
+                    </div>
+                    <div class="error div text-danger"></div>
+                    <div class="d-lg-flex align-items-center">
+                        <button class="btn btn-primary m-2">Login</button>
+                        <a href="/signup" class="text-white m-2">Create an account?</a>
+                        <a href="/forgot" class="text-white m-2">Forgot password</a>
+                    </div>
+                </form>
+            </div>
+    </div>
+</header>
+
+<script src="../public/login.js"></script>

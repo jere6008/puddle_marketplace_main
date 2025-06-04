@@ -1,0 +1,151 @@
+<%- include('partials/header') %>
+
+<style>
+  .pay {
+    display: flex;
+    flex-wrap: wrap;
+  }
+</style>
+
+<header>
+  <h1 class="display-5 text-white">Pay now using Wallie</h1>
+
+  <section class="pay">
+
+    <div class="intro">
+      <h1 class="text-white">You are about to pay <span class="total"></span></h1>
+    </div>
+
+
+  <div>
+    <form class="row g-3 m-2 form">
+      <div class="col-md-4">
+        <label for="inputEmail" class="form-label text-white">Email</label>
+        <input type="email" class="form-control" id="inputEmail" placeholder="Your email" />
+      </div>
+      <div class="col-md-4">
+        <label for="inputAddress" class="form-label text-white">Address</label>
+        <input
+          type="text"
+          class="form-control"
+          id="inputAddress"w
+          placeholder="1234 Main St"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label for="inputPhone" class="form-label text-white">Phone</label>
+        <input type="text" class="form-control" id="inputPhone" placeholder="Phone to receive OTP. Ex.. 254712345678">
+      </div>
+      <div class="col-md-4">
+        <label for="inputCity" class="form-label text-white">City</label>
+        <input type="text" class="form-control" id="inputCity" placeholder="Your city" />
+      </div>
+      <div class="col-md-4">
+        <label for="inputState" class="form-label text-white">State</label>
+        <select id="inputState" class="form-select" required>
+          <option value="">Choose...</option>
+          <option value="Kenya">Kenya</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn m-2 btn-success">Make order</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+  <script>
+
+    let cartArr = [];
+    let total = 0;
+    let user_id = "";
+
+    const emailField = document.getElementById("inputEmail");
+    const addressField = document.getElementById("inputAddress");
+    const phoneField = document.getElementById("inputPhone");
+    const cityField = document.getElementById("inputCity");
+    const stateField = document.getElementById("inputState")
+    const checkoutForm = document.querySelector(".form");
+
+    checkoutForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const body = {
+        author: 'kennynet66@gmail.com',
+        cart: cartArr,
+        total: total,
+        address: [
+          {
+            email: emailField.value,
+            address: addressField.value,
+            phoneField: phoneField.value,
+            cityField: cityField.value,
+            stateField: stateField.value
+          }
+        ],
+        user_id: user_id
+      };
+
+      const data = (await fetch("http://localhost:3002/create-order", {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        method: 'POST',
+        body: JSON.stringify(body)
+      }));
+
+      const result = await data.json();
+
+      if(result.order){
+        Swal.fire({
+            title: "Success!",
+            text: `Order placed successfully. An STK has been sent to ${phoneField.value}.Your order tracking number is ${result.order}`,
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+      }
+
+      window.location.href = "/orders";
+
+    });
+
+    const displayCost = document.querySelector(".total");
+
+    
+    window.onload = () => {
+      let cart = localStorage.getItem("cart");
+      cart = JSON.parse(cart);
+      const doMath = () => {
+      let totalcost = 0;
+      cart.forEach((item) => {
+        totalcost += parseFloat(item.price);
+        cartArr.push(item);
+      });
+      
+      total = totalcost;
+      displayCost.textContent = totalcost;
+    };
+
+      user_id = localStorage.getItem("user_id");
+      user_id = JSON.parse(user_id);
+
+      const getUserDetails = async (user_id) => {
+        const data = await fetch(`http://localhost:3002/one-user/${user_id}`);
+
+        const user_details = await data.json();
+
+        if(user_details.user){
+          emailField.value = user_details.user.email;
+        }
+
+      };
+
+      if(user_id){
+        doMath();
+        getUserDetails(user_id);
+      }
+    };
+
+  </script>
+</header>

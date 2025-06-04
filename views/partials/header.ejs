@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Bootstrap javaScript CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+<!-- Header links -->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="../../public/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  	<!-- jQuery -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!-- Toastr -->
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+</head>
+
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/" style='font-family: "Sofia", sans-serif;'>Puddle</a>
+      <div class="justify-content-end">
+
+        <!-- Hamburger button to be displayed on medium and small screens -->
+        <button class="navbar-toggler" type="button" style='font-family: "Sofia", sans-serif;' data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+          <!-- If the user is authenticated the following navbar content will be visible -->
+          <% if (user || admin) {%>
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <!-- View profile Icon -->
+            <li class="nav-item d-none d-lg-block">
+              <a class="nav-link text-dark text-lg" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"><i class="bi bi-person-circle"></i></a>
+            </li>
+            <!-- Remove profile Icon on medium and small screens and replace it with the word profile -->
+            <li class="nav-item d-block d-lg-none">
+              <a class="nav-link text-dark text-lg" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">Profile</i></a>
+            </li>
+            <!-- Contact us button that links to the contact page -->
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/contact">Feed Back</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/dashboard">Dashboard</a>
+            </li>
+
+            <li class="nav-item">
+              <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Cart<div class="badge update text-bg-secondary"></div></button>
+            </li>
+          </ul>
+
+
+          <!-- Search area -->
+          <form class="d-none d-lg-flex m-2 searchform">
+            <input class="form-control me-2 w-75 data" name="data" id="data" type="search" placeholder="Search by category" aria-label="Search">
+            <button class="btn btn-outline-success"><i class="bi bi-search"></i></button>
+          </form>
+
+          <!-- Logout button -->
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active text-white btn btn-danger" href="/logout">log out</a>
+            </li>
+          </ul>
+          <% } else { %>
+          <!-- If the user is not authenticated the following options are available -->
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/signup">Signup</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Log in</a>
+            </li>
+          </ul>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- An off canvas to display the user details -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Your profile</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <!-- If the user is logged in the following will be parsed to the front end -->
+      <% if (user) { %>
+      <h2 class="lead usser" userid=" <%= user._id %>"><strong>ID:</strong> <%= user._id %></h2>
+      <span class="badge text-bg-warning"><%= user.state %></span>
+      <img src=<%= user.profile_photo %> class="w-100 rounded" alt="Your profile photo" class="profile">
+      <hr>
+      <h2 class="lead"><strong>User name: </strong> <%= user.full_name %></h2>
+      <h2 class="lead"><strong>Email:</strong> <%= user.email %></h2>
+      <% } %>
+      <% if (admin) { %>
+      <span class="badge text-bg-success"><%= admin.state %></span>
+      <img src=<%= admin.profile_photo %> class="w-100 rounded" alt="Your profile photo" class="profile">
+      <hr>
+      <h2 class="lead"><strong>User name: </strong> <%= admin.full_name %></h2>
+      <h2 class="lead"><strong>Email:</strong> <%= admin.email %></h2>
+      <% } %>
+    </div>
+  </div>
+    
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+      <div class="offcanvas-header">
+        <h5 id="offcanvasRightLabel">Your cart</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="container">
+          <div class="row">
+            <h1 class="lead">Products</h1>
+            <div class="displayitem border rounded text-start"></div>
+          </div>
+        </div>
+        <button class="totalcost btn btn-outline-warning"></button>
+      <button href="/checkout" onclick="checkout()" class="btn checkout btn-success">Checkout</button>
+      </div>
+    </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+
+</html>

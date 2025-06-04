@@ -1,0 +1,54 @@
+<%- include('partials/header'); -%>
+<title>Puddle | Feedback</title>
+<header>
+  <div class="container">
+    <div class="row">
+      <form class="col-md-12 g-3 feedback-form">
+        <div class="col-md-6">
+          <label for="inputEmail4" class="form-label text-white">Email:</label>
+          <input
+            type="email"
+            class="form-control"
+            id="inputEmail4"
+            placeholder="Your email"
+            required
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="phone" class="form-label text-white">Phone:</label>
+          <input
+            type="tel"
+            class="form-control"
+            id="phone"
+            placeholder="Your phone"
+            required
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="feedback" class="form-label text-white">Feedback:</label>
+          <textarea
+            name="feedback"
+            id="feedback"
+            class="form-control"
+            placeholder="Your feedback here"
+            required
+            style="resize: none;"
+          ></textarea>
+        </div>
+        <div class="col-12 m-2">
+          <button type="submit" class="btn btn-primary">Send feedback</button>
+          <a href="/" class="btn btn-danger">Back</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const feedbackForm = document.querySelector(".feedback-form");
+
+    feedbackForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+    });
+  </script>
+</header>
+<%- include('partials/footer'); -%>

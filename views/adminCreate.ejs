@@ -1,0 +1,63 @@
+<%- include('partials/adminheader'); -%>
+
+<header>
+    <title> puddle | Create admin</title>
+    <div class="container-sm mt-2">
+    <div class="row justify-content-center">
+        <form class="form col col-md-6">
+            <h2 class="text-white ">Create admin</h2>
+            <div class="mb-3">
+                <label for="full_name" class="form-label text-white">Enter full name: </label>
+                <input type="text" class="form-control w-100" id="full_name" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label text-white">Enter email: </label>
+                <input type="email" class="form-control w-100" id="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label text-white">Enter password: </label>
+                <input type="password" class="form-control w-100" id="password" required>
+            </div>
+            <div class="error div text-danger"></div>
+            <div class="d-flex">
+                <button class="btn btn-primary m-2">Create</button>
+                <a class="btn btn-danger m-2" href="/admin">Back</a>
+            </div>
+        </form>
+    </div>
+    </div>
+</header>
+
+<script>
+    const form = document.querySelector('.form');
+    const errorDiv = document.querySelector('.error.div');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        //reset errors
+        errorDiv.textContent='';
+
+        const full_name = form.full_name.value;
+        const email = form.email.value;
+        const password = form.password.value;
+
+        try {
+            const res = await fetch('/admin/create',{
+                method: 'POST',
+                body: JSON.stringify({ email, password, full_name }),
+                headers: { 'content-Type' : 'application/json' }
+            });
+            const data = await res.json();
+            if (data.errors) {
+                errorDiv.innerHTML = `${data.errors.email}<br> ${data.errors.password}<br> ${data.errors.full_name}`;
+            }
+
+            if (data.admin) {
+                location.assign('/admin');
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    })
+</script>

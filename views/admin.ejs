@@ -1,0 +1,109 @@
+<%- include('partials/adminheader'); -%>
+
+<header>
+    <title>puddle | admin</title>
+
+       
+<!-- Search area -->
+<form class="d-flex d-lg-none m-2">
+  <input class="form-control me-2 w-75" type="search" placeholder="Search" aria-label="Search">
+  <button class="btn btn-outline-success" type="submit">Search</button>
+</form>
+  <!-- Calculate the number of items -->
+    <% var itemno = 0 %>
+    <% var phones = 0 %>
+    <% var shoes = 0 %>
+
+<% if (items && items.length > 0) { %>
+  <% items.forEach(item => { %>
+    <% if (item.category === "phones") { %>
+      <% phones += 1 %>
+    <% } %>
+  <% })} %>
+
+  <% if (items && items.length > 0) { %>
+    <% items.forEach(item => { %>
+      <% if (item.category === "shoes") { %>
+        <% shoes += 1 %>
+      <% } %>
+    <% })} %>
+
+  
+
+    <% if (items && items.length > 0) { %>
+      <% items.forEach(item => { %>
+          <% itemno+=1 %>
+    <% })} %>
+
+<!-- Display the admin details -->
+<div class="container-lg">
+  <div class="row mt-2">
+    <div class="card border-success m-3 col-3" style="width: 19rem;">
+      <% if (admin) { %>
+      <div class="card-header">Admin Details</div>
+        <div class="card-body text-success">
+          <h6 class="card-title">Fullname: <%= admin.full_name %> </h6>
+          <h6>email: <%= admin.email %></h6>
+        </div>
+        <% } %>
+    </div>
+    <!-- Display product statistics -->
+    <div class="card border-success m-3 col-3" style="width: 19rem;">
+      <div class="card-header">Product statistics</div>
+        <div class="card-body text-success">
+          <h6 class="card-title">Total products: <%= itemno %> </h6>
+          <h6 class="card-title">Number of phones: <%= phones %> </h6>
+          <h6 class="card-title">Number of shoes: <%= shoes %> </h6>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container-xxl">
+      <div class="row">
+        <% if (items && items.length > 0) { %>
+          <% items.forEach(item => { %>
+              <div class="card m-2 p-2" style="width: 18rem;">
+                <p class="card-text">ID: <%= item._id%></p>
+                <img src="<%= item.photo %>" class="card-img-top" alt="<%= item.item_name %>" height="100%" style="object-fit: cover;">
+                <div class="card-body">
+                  <p class="card-text"><%= item.description%></p>
+                </div>
+                <div class="d-flex">
+                  <a href="#" class="delete btn btn-danger m-2 btn-sm" data-item_id="<%= item._id %>">Delete</a>
+                  <a href="/item?id=<%= item._id %>&name=<%= item.item_name %>&price=<%=item.price%>" class="edit btn btn-success m-2 btn-sm" data-item_id="<%= item._id %>">Edit</a>
+                </div>
+              </div>
+        <% })} %>
+      </div>
+    </div>
+</header>
+
+<script>
+    const deleteButtons = document.querySelectorAll('.delete');
+  
+    deleteButtons.forEach(deleteButton => {
+      deleteButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+  
+        const _id = deleteButton.getAttribute('data-item_id');
+  
+        try {
+          const res = await fetch('/item/delete', {
+            method: 'PUT',
+            body: JSON.stringify({ _id }),
+            headers: { 'Content-Type': 'application/json' },
+          });
+          const data = await res.json();
+  
+          if (data.errors) {
+          } else if (data.deletedItem) {
+            location.reload();
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      });
+    });
+  </script>
+  

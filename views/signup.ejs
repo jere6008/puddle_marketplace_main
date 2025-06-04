@@ -1,0 +1,40 @@
+<%- include('partials/header'); -%>
+
+<title>Puddle | Signup</title>
+
+<header>
+    <div class="container-sm mt-2">
+        <div class="row justify-content-center">
+            <form class="form col col-md-6">
+                    <h2 class="text-white ">Sign in</h2>
+                    <div class="mb-3">
+                        <label for="full_name" class="form-label text-white">Enter full name: </label>
+                        <input type="text" class="form-control w-100" id="full_name">
+                        <div class="instruction text-warning">Name must contain atleast 2 words</div>
+                        <div class="nameerr text-danger"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label text-white">Enter email: </label>
+                        <input type="email" class="form-control w-100" id="email">
+                        <div class="instruction text-warning">Only valid emails will be accepted</div>
+                        <div class="emailerr text-danger"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label text-white">Enter password: </label>
+                        <input type="password" class="form-control w-100" id="password">
+                        <div class="instruction text-warning">Minimum password length 6 characters</div>
+                        <div class="passerr text-danger"></div>
+                    </div>
+                    <div class="error div text-danger"></div>
+                    <div class="d-lg-flex align-items-center">
+                        <button class="btn btn-primary m-2">Sign in</button>
+                        <a href="/login" class="text-white m-2">Already have an account?</a>
+                    </div>
+                </form>
+            </div>
+    </div>
+</header>
+
+
+
+<script src="../public/signup.js"></script>

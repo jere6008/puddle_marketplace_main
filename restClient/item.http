@@ -1,0 +1,28 @@
+GET http://localhost:3002/one-user/6697966e337ebe59261d0282
+
+### Create an order
+POST http://localhost:3002/create-order
+Content-Type: application/json
+
+{
+    "user_id": "6697966e337ebe59261d0282",
+    "cart": [{"item":"item"}, {"item1":"item1"}],
+    "total": 2500,
+    "address": ["", ""]
+}
+
+#### Get a users orders
+GET http://localhost:3002/user-orders/6697966e337ebe59261d0282
+
+### Cancel an order
+DELETE http://localhost:3002/cancel-order/66a7cf7cea420e2645d3b9b3
+
+### Create admin
+POST http://localhost:3002/admin/create
+Content-Type: application/json
+
+{
+    "full_name": "Kenedy Maina",
+    "email": "kennynet66@gmail.com",
+    "password": "test12"
+}
